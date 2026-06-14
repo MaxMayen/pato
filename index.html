@@ -2,8 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patoooooooo</title>
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -21,6 +26,8 @@
             height: 100%;
             z-index: 1;
             background: #000;
+            
+            pointer-events: none; 
         }
 
         #player {
@@ -30,7 +37,6 @@
             width: 100vw;
             height: 100vh;
             transform: translate(-50%, -50%);
-            object-fit: cover;
         }
 
         @media (min-aspect-ratio: 16/9) {
@@ -43,9 +49,10 @@
 
         .controls {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             z-index: 100;
+            transition: all 0.3s ease;
         }
 
         button {
@@ -57,11 +64,39 @@
             border: 4px solid #000;
             box-shadow: 8px 8px 0px #ff0055;
             text-transform: uppercase;
+            font-size: 1rem;
+            white-space: nowrap;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0px #ff0055;
+        }
+
+                                                                /* "NI YO SE COMO FUNCIONA ESTO" */
+        @media (max-width: 480px) {
+            .controls {
+                bottom: 20px;
+                right: 50%;
+                transform: translateX(50%); 
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                box-shadow: 5px 5px 0px #ff0055;
+            }
+
+            button:active {
+                transform: translate(3px, 3px);
+                box-shadow: 2px 2px 0px #ff0055;
+            }
         }
     </style>
 </head>
 <body>
-                <!--"NI YO SE COMO FUNCIONA ESTO"-->
+
     <div class="video-background">
         <div id="player"></div>
     </div>
@@ -101,12 +136,14 @@
         }
 
         document.getElementById('unmuteButton').onclick = function() {
-            if (player.isMuted()) {
-                player.unMute();
-                this.innerText = "SILENCIAR 🔇";
-            } else {
-                player.mute();
-                this.innerText = "ACTIVAR AUDIO 🔊";
+            if (player && typeof player.isMuted === 'function') {
+                if (player.isMuted()) {
+                    player.unMute();
+                    this.innerText = "SILENCIAR 🔇";
+                } else {
+                    player.mute();
+                    this.innerText = "ACTIVAR AUDIO 🔊";
+                }
             }
         };
     </script>
